@@ -1,0 +1,44 @@
+let express = require("express");
+let app = express();
+let PORT = 3000;
+
+app.use(express.json());
+
+let authors = [
+  { authorId: 1, name: "George Orwell", book: "1984" },
+  { authorId: 2, name: "Aldous Huxley", book: "Brave New World" },
+  { authorId: 3, name: "Ray Bradbury", book: "Fahrenheit 451" },
+];
+
+function getAuthors() {
+  return authors;
+}
+
+function getAuthorById(id) {
+  return authors.find((author) => author.authorId === id);
+}
+
+function addAuthor(author) {
+  authors.push(author);
+  return author;
+}
+
+app.get("/authors", (req, res) => {
+  res.json(getAuthors());
+});
+
+app.get("/authors/details/:id", (req, res) => {
+  const author = getAuthorById(parseInt(req.params.id));
+  if (!author) return res.status(404).send("Author not found");
+  res.json(author);
+});
+
+app.post("/authors/new", (req, res) => {
+  let authorId = req.query.authorId;
+  let name = req.query.name;
+  let book = req.query.book;
+  let addedAuthor = addAuthor({ authorId, name, book });
+  res.status(200).json(addedAuthor);
+});
+
+module.exports = { app, getAuthors, getAuthorById, addAuthor };

@@ -1,0 +1,10 @@
+# Ignore node_modules folder
+node_modules/
+
+# Ignore package-lock.json file
+package-lock.json
+
+# Ignore any other folders or files
+.DS_Store
+# /some-other-folder/
+# /some-other-file
